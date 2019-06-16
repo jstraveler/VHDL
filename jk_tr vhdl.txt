@@ -1,0 +1,29 @@
+library IEEE;
+use ieee.std_logic_1164.all;
+entity jk_vhdl is
+port(s, r, j, k,c: in std_logic;
+	q, qi: inout std_logic);
+end jk_vhdl;
+architecture behav of jk_vhdl is
+signal q_sig :std_logic;
+begin
+process(s,r,c)
+begin
+	if r = '0' then q_sig<='0';
+	elsif s = '0' then q_sig<='1';
+	elsif(c'event and c = '1') then
+		if j = '1' then
+			if k = '1' then q_sig<= not q_sig;
+			else q_sig<='1';
+			end if;
+		else 
+			if k = '1' then q_sig<='0';
+			else q_sig<=q_sig;
+			end if;
+		end if;
+	else q_sig<=q_sig;
+	end if;
+end process;
+q<=q_sig;
+qi<=not q_sig;	
+end behav;
